@@ -50,7 +50,12 @@ function User(){
         clearState.check = false;
 
         setState(clearState);
+    }
 
+    const itemDelete = (index) => {
+        const cloneState = {...state};
+        cloneState.list.splice(index, 1);
+        setState(cloneState);
     }
     return(
         <div className="App text-left">
@@ -127,7 +132,7 @@ function User(){
                                     <td>{item.check ? 'Yes' : 'No'}</td>
                                     <td>
                                         <Button variant="primary"><FaEdit /></Button>{' '}
-                                        <Button variant="danger"><FaTrashAlt /></Button>
+                                        <Button variant="danger" onClick={()=>itemDelete(index)}><FaTrashAlt /></Button>
                                     </td>
                                 </tr>
                                 )
