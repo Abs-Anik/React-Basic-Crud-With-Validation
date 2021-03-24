@@ -16,6 +16,7 @@ function User(){
         list:[]
 
     });
+    const [isEdit, setIsEdit] = useState(false);
 
     const handleChange = (value, name) => {
         const cloneState = {...state};
@@ -57,6 +58,47 @@ function User(){
         cloneState.list.splice(index, 1);
         setState(cloneState);
     }
+
+    const itemEdit = (index, item) => {
+        const cloneState = {...state};
+        cloneState.id = index;
+        cloneState.name = item.name;
+        cloneState.age = item.age;
+        cloneState.address = item.address;
+        cloneState.district = item.district;
+        cloneState.gender = item.gender;
+        cloneState.check = item.check;
+        setState(cloneState);
+        setIsEdit(true);
+    }
+
+    const handleUpdate = (e) => {
+        e.preventDefault();
+        const cloneState = {...state};
+        for (let i = 0; i < cloneState.list.length; i++) {
+            const element = cloneState.list[i];
+            if(i == state.id){
+                element.name = state.name;
+                element.age = state.age;
+                element.address = state.address;
+                element.district = state.district;
+                element.gender = state.gender;
+                element.check = state.check;
+            }
+
+            setState(cloneState);
+
+            const clearState = {...state};
+            clearState.name = "";
+            clearState.age = "";
+            clearState.address = "";
+            clearState.district = "";
+            clearState.gender = "Male";
+            clearState.check = false;
+            setState(clearState);
+            setIsEdit(false);   
+        }
+    }
     return(
         <div className="App text-left">
             <div className="container">
@@ -65,7 +107,7 @@ function User(){
                         <Card>
                             <Card.Header className="card-header-bg text-light text-bold">Provide User Details</Card.Header>
                             <Card.Body className="card-body-bg">
-                                <Form onSubmit={(e)=>handleSubmit(e)}>
+                                <Form onSubmit={isEdit === true ? (e)=>handleUpdate(e) : (e)=>handleSubmit(e)}>
                                     <Form.Group controlId="formBasicName">
                                     <Form.Label className="text-light">User Name</Form.Label>
                                     <Form.Control type="text" placeholder="Enter user name" name="name" value={state.name} onChange={(e)=>handleChange(e.target.value, 'name')}/>
@@ -88,6 +130,7 @@ function User(){
                                       <option value="Khulna">Khulna</option>
                                       <option value="Comilla">Comilla</option>
                                       <option value="Shylet">Shylet</option>
+                                      <option value="Dinajpur">Dinajpur</option>
                                     </Form.Control>
                                   </Form.Group>
                                     <Form.Group controlId="formBasicRadio">
@@ -96,11 +139,11 @@ function User(){
                                     <input type="radio" value="Other" name="gender"  onChange={(e)=>handleChange(e.target.value, 'gender')}/> <span className="text-light">Other</span>
                                     </Form.Group>
                                     <Form.Group controlId="formBasicCheckbox">
-                                    <Form.Check type="checkbox" label="Check me out" name="check" checked={state.check} className="text-light" onChange={(e)=>handleChange(e.target.value, 'check')}/>
+                                    <Form.Check type="checkbox" label="Check me out" value={state.check} name="check" checked={state.check} className="text-light" onChange={(e)=>handleChange(e.target.checked, 'check')}/>
                                     </Form.Group>
-                                    <Button variant="primary" type="submit" className="text-light">
-                                    Submit
-                                    </Button>
+                                    {
+                                        isEdit === true ? <Button variant="warning" type="submit" className="text-light">Update</Button> : <Button variant="primary" type="submit" className="text-light">Submit</Button>
+                                    }
                                 </Form>
                             </Card.Body>
                         </Card>
@@ -128,10 +171,10 @@ function User(){
                                     <td>{item.age}</td>
                                     <td>{item.address}</td>
                                     <td>{item.district}</td>
-                                    <td>{item.gender}</td>
+                                    <td>{item.gender == ""? "N/A" : item.gender}</td>
                                     <td>{item.check ? 'Yes' : 'No'}</td>
                                     <td>
-                                        <Button variant="primary"><FaEdit /></Button>{' '}
+                                        <Button variant="primary" onClick={()=>itemEdit(index, item)}><FaEdit /></Button>{' '}
                                         <Button variant="danger" onClick={()=>itemDelete(index)}><FaTrashAlt /></Button>
                                     </td>
                                 </tr>
