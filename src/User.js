@@ -1,10 +1,29 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import './Style.css';
 
 import {Form, Button, Card} from 'react-bootstrap';
 
 function User(){
+    const [state, setState] = useState({
+        id: "",
+        name:"",
+        age:"",
+        address:"",
+        district:"",
+        gender:"",
+        check:"",
+        list:[]
+
+    });
+
+    const handleChange = (value, name) => {
+        const cloneState = {...state};
+        cloneState[name] = value;
+        setState(cloneState);
+    }
+
+    console.log(`state`, state);
     return(
         <div className="App text-left">
             <div className="container">
@@ -16,35 +35,35 @@ function User(){
                                 <Form>
                                     <Form.Group controlId="formBasicName">
                                     <Form.Label className="text-light">User Name</Form.Label>
-                                    <Form.Control type="text" placeholder="Enter user name" />
+                                    <Form.Control type="text" placeholder="Enter user name" name="name" onChange={(e)=>handleChange(e.target.value, 'name')}/>
                                     </Form.Group>
                                 
                                     <Form.Group controlId="formBasicAge">
                                     <Form.Label className="text-light">Age</Form.Label>
-                                    <Form.Control type="number" placeholder="Age" />
+                                    <Form.Control type="number" name="age" placeholder="Age" onChange={(e)=>handleChange(e.target.value, 'age')}/>
                                     </Form.Group>
                                     <Form.Group controlId="exampleForm.ControlTextarea1">
                                     <Form.Label className="text-light">Address</Form.Label>
-                                    <Form.Control as="textarea" rows={3} />
+                                    <Form.Control as="textarea" name="address" rows={3} onChange={(e)=>handleChange(e.target.value, 'address')}/>
                                     </Form.Group>
                                     <Form.Group controlId="exampleForm.ControlSelect1">
                                     <Form.Label className="text-light">Select District</Form.Label>
-                                    <Form.Control as="select">
-                                      <option>--Select District--</option>
-                                      <option>Dhaka</option>
-                                      <option>Meherpur</option>
-                                      <option>Khulna</option>
-                                      <option>Comilla</option>
-                                      <option>Shylet</option>
+                                    <Form.Control as="select" name="district" onChange={(e)=>handleChange(e.target.value, 'district')}>
+                                      <option value="">--Select District--</option>
+                                      <option value="Dhaka">Dhaka</option>
+                                      <option value="Meherpur">Meherpur</option>
+                                      <option value="Khulna">Khulna</option>
+                                      <option value="Comilla">Comilla</option>
+                                      <option value="Shylet">Shylet</option>
                                     </Form.Control>
                                   </Form.Group>
                                     <Form.Group controlId="formBasicRadio">
-                                    <input type="radio" value="Male" name="gender" /> <span className="text-light">Male &nbsp; &nbsp;</span>
-                                    <input type="radio" value="Female" name="gender" /> <span className="text-light">Female &nbsp; &nbsp;</span>
-                                    <input type="radio" value="Other" name="gender" /> <span className="text-light">Other</span>
+                                    <input type="radio" value="Male" name="gender" onChange={(e)=>handleChange(e.target.value, 'gender')} /> <span className="text-light">Male &nbsp; &nbsp;</span>
+                                    <input type="radio" value="Female" name="gender" onChange={(e)=>handleChange(e.target.value, 'gender')} /> <span className="text-light">Female &nbsp; &nbsp;</span>
+                                    <input type="radio" value="Other" name="gender" onChange={(e)=>handleChange(e.target.value, 'gender')} /> <span className="text-light">Other</span>
                                     </Form.Group>
                                     <Form.Group controlId="formBasicCheckbox">
-                                    <Form.Check type="checkbox" label="Check me out" className="text-light"/>
+                                    <Form.Check type="checkbox" label="Check me out" name="check" className="text-light" onChange={(e)=>handleChange(e.target.value, 'check')}/>
                                     </Form.Group>
                                     <Button variant="primary" type="submit" className="text-light">
                                     Submit
